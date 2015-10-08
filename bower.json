@@ -1,7 +1,7 @@
 {
   "name": "fm-datepicker",
   "description": "FairManager Date Picker Component",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/fairmanager/fm-datepicker",
   "authors": [
     "Oliver Salzburg <oliver.salzburg@gmail.com>"
