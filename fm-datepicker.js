@@ -31,7 +31,8 @@
 
 	/* globals $, angular, Hamster, moment */
 
-	var ONE_DAY = moment.duration( 1, "day" );
+	var ONE_DAY  = moment.duration( 1, "day" );
+	var ONE_WEEK = moment.duration( 1, "week" );
 
 	// Declare fmComponents module if it doesn't exist.
 	try {
@@ -120,7 +121,7 @@
 				}
 
 				// We step through each possible value instead of calculating the index directly,
-				// to make sure we account for DST changes in the reference day.
+				// to make sure we account for DST changes in the reference timezone.
 				for( var time = $scope.startDate.clone(); +time <= +$scope.endDate; time.add( ONE_DAY ), ++$scope.activeIndex ) {
 
 					if( 9999 < $scope.activeIndex ) {
@@ -282,7 +283,7 @@
 									newTime = moment.tz(
 										scope.time,
 										scope.format,
-										scope.reference.tz() );
+										scope.timezone );
 								} else {
 									newTime = moment( scope.time, scope.format );
 								}
@@ -293,7 +294,7 @@
 									scope.time = moment.tz(
 										scope.time,
 										scope.format,
-										scope.reference.tz() ).format( scope.format );
+										scope.timezone ).format( scope.format );
 								} else {
 									scope.time = moment( scope.time, scope.format ).format( scope.format );
 								}
@@ -311,7 +312,7 @@
 								time = timeString ? moment.tz(
 									timeString,
 									scope.format,
-									scope.reference.tz() ) : moment.invalid();
+									scope.timezone ) : moment.invalid();
 							} else {
 								time = timeString ? moment( timeString, scope.format ) : moment.invalid();
 							}
@@ -336,7 +337,7 @@
 								time = timeString ? moment.tz(
 									timeString,
 									scope.format,
-									scope.reference.tz() ) : moment.invalid();
+									scope.timezone ) : moment.invalid();
 							} else {
 								time = timeString ? moment( timeString, scope.format ) : moment.invalid();
 							}
@@ -427,7 +428,7 @@
 							// Construct a moment instance from the UNIX offset.
 							var time;
 							if( moment.tz ) {
-								time = moment( timestamp ).tz( scope.reference.tz() );
+								time = moment( timestamp ).tz( scope.timezone );
 							} else {
 								time = moment( timestamp );
 							}
@@ -475,7 +476,7 @@
 								if( moment.tz ) {
 									newTime = moment.tz( scope.time,
 										scope.format,
-										scope.reference.tz() );
+										scope.timezone );
 								} else {
 									newTime = moment( scope.time, scope.format );
 								}
@@ -499,18 +500,16 @@
 								case 33:
 									// Page up
 									openPopup();
-									scope.modelPreview.subtract( scope.largeInterval );
+									scope.modelPreview.subtract( ONE_WEEK );
 									scope.modelPreview = scope.ensureTimeIsWithinBounds( scope.modelPreview );
-									scope.activeIndex  = Math.max( 0,
-										scope.activeIndex - scope.largeIntervalIndexJump );
+									scope.activeIndex  = Math.max( 0, scope.activeIndex - 7 );
 									break;
 								case 34:
 									// Page down
 									openPopup();
-									scope.modelPreview.add( scope.largeInterval );
+									scope.modelPreview.add( ONE_WEEK );
 									scope.modelPreview = scope.ensureTimeIsWithinBounds( scope.modelPreview );
-									scope.activeIndex  = Math.min( scope.largestPossibleIndex,
-										scope.activeIndex + scope.largeIntervalIndexJump );
+									scope.activeIndex  = Math.min( scope.largestPossibleIndex, scope.activeIndex + 7 );
 									break;
 								case 38:
 									// Up arrow
