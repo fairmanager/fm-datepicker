@@ -1,5 +1,5 @@
 {
-  "name": "fm-timepicker",
+  "name": "fm-datepicker",
   "version": "1.0.0",
   "description": "FairManager Date Picker Component",
   "main": "src/fm-datepicker.js",
