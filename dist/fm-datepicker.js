@@ -31,7 +31,8 @@
 
 	/* globals $, angular, Hamster, moment */
 
-	var ONE_DAY = moment.duration( 1, "day" );
+	var ONE_DAY  = moment.duration( 1, "day" );
+	var ONE_WEEK = moment.duration( 1, "week" );
 
 	// Declare fmComponents module if it doesn't exist.
 	try {
@@ -499,18 +500,16 @@
 								case 33:
 									// Page up
 									openPopup();
-									scope.modelPreview.subtract( scope.largeInterval );
+									scope.modelPreview.subtract( ONE_WEEK );
 									scope.modelPreview = scope.ensureTimeIsWithinBounds( scope.modelPreview );
-									scope.activeIndex  = Math.max( 0,
-										scope.activeIndex - scope.largeIntervalIndexJump );
+									scope.activeIndex  = Math.max( 0, scope.activeIndex - 7 );
 									break;
 								case 34:
 									// Page down
 									openPopup();
-									scope.modelPreview.add( scope.largeInterval );
+									scope.modelPreview.add( ONE_WEEK );
 									scope.modelPreview = scope.ensureTimeIsWithinBounds( scope.modelPreview );
-									scope.activeIndex  = Math.min( scope.largestPossibleIndex,
-										scope.activeIndex + scope.largeIntervalIndexJump );
+									scope.activeIndex  = Math.min( scope.largestPossibleIndex, scope.activeIndex + 7 );
 									break;
 								case 38:
 									// Up arrow
