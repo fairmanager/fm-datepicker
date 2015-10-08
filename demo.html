@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="demo">
+<head>
+	<title></title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+</head>
+<body ng-controller="DemoController">
+<div class="container">
+	<div class="header">
+		<h3>fm-datepicker</h3>
+	</div>
+	<div class="row">
+		<div class="well">
+			<form class="form-horizontal" role="form" name="form" novalidate>
+				<div class="form-group" ng-class="{'has-error':form.date.$invalid}">
+					<label class="control-label col-sm-2" for="date">Test</label>
+
+					<div class="col-sm-10">
+						<fm-datepicker id="date"
+									   name="date"
+									   ng-model="date"
+									   style="style"
+									   start-date="start"
+									   end-date="end"
+									   format="dateFormat"
+									   is-open="isOpen"
+									   strict="strict"></fm-datepicker>
+						<p class="text-danger ng-cloak" ng-show="form.date.$error.date">The selected date is not a valid
+							date understood by fm-datepicker.</p>
+
+						<p class="text-danger ng-cloak" ng-show="form.date.$error.bounds">The selected date does not lie
+							within the specified start and end date.</p>
+
+						<p class="text-danger ng-cloak" ng-show="form.date.$error.start">start is invalid</p>
+
+						<p class="text-danger ng-cloak" ng-show="form.date.$error.end">end is invalid</p>
+					</div>
+				</div>
+
+				<hr>
+
+				<label class="text-muted">I/O</label>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="model">Model</label>
+
+					<div class="col-sm-10">
+						<input type="text" id="model" class="form-control" ng-model="time" disabled>
+
+						<p class="help-block">This input has the same moment instance set as the model as the
+							fm-datepicker above.</p>
+					</div>
+				</div>
+
+				<hr>
+
+				<label class="text-muted">Parameters</label>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Strict mode?</label>
+
+					<div class="col-sm-10">
+						<div class="checkbox">
+							<label class="control-label" for="strict">
+								<input type="checkbox" id="strict" ng-model="strict"> {{strict?'Yes':'No'}}
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="style">Style</label>
+
+					<div class="col-sm-10">
+						<select id="style" class="form-control" ng-model="style">
+							<option value="dropdown">Dropdown</option>
+							<option value="sequential">Sequential</option>
+						</select>
+
+						<p class="help-block">You can choose between having a dropdown with all available times, or
+							increment/decrement buttons.</p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="dateFormat">Format</label>
+
+					<div class="col-sm-10">
+						<input type="text" id="dateFormat" class="form-control" ng-model="dateFormat">
+
+						<p class="help-block">This <a href="http://momentjs.com/docs/#/displaying/format/">format</a>
+							will be used to render any moment instance that is used in fm-datepicker. Try it!</p>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="startDate">Start</label>
+
+					<div class="col-sm-10">
+						<input type="text" id="startDate" class="form-control" ng-model="startDate">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="endDate">End</label>
+
+					<div class="col-sm-10">
+						<input type="text" id="endDate" class="form-control" ng-model="endDate">
+
+						<p class="help-block">The start and end time are supplied to fm-datepicker as moment
+							instances. For this demo, you should enter dates that match your selected format.</p>
+					</div>
+				</div>
+
+				<div class="form-group" ng-show="style=='dropdown'">
+					<label class="col-sm-2 control-label">Dropdown open?</label>
+
+					<div class="col-sm-10">
+						<div class="checkbox">
+							<label class="control-label" for="isOpen">
+								<input type="checkbox" id="isOpen" ng-model="isOpen"> {{isOpen?'Yes':'No'}}
+							</label>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js"></script>
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="hamster.js"></script>
+<script src="fm-datepicker.js"></script>
+<script>
+	angular
+			.module( "demo", [ "fm.components" ] )
+			.controller( "DemoController", DemoController );
+
+	function DemoController( $scope ) {
+		// Our main parameters for the time picker.
+		// These will primarily be used to populate the scope of this demonstration.
+		$scope.style      = "dropdown";
+		$scope.dateFormat = "LL";
+		$scope.startDate  = moment().startOf( "year" ).format( "LL" );
+		$scope.endDate    = moment().endOf( "year" ).format( "LL" );
+
+		// Parameters that will actually be passed into the datepicker.
+		$scope.date  = moment();
+		$scope.start = moment( $scope.startDate, $scope.dateFormat );
+		$scope.end   = moment( $scope.endDate, $scope.dateFormat );
+
+		// Watch parameters in our local scope and update the parameters in the datepicker as needed.
+		$scope.$watchCollection( "[startDate, dateFormat]", function( newValues ) {
+			$scope.start = moment( newValues[ 0 ], newValues[ 1 ] );
+		} );
+		$scope.$watchCollection( "[endDate, dateFormat]", function( newValues ) {
+			$scope.end = moment( newValues[ 0 ], newValues[ 1 ] );
+		} );
+	}
+</script>
+</body>
+</html>
