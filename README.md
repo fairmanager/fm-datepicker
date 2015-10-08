@@ -5,4 +5,4 @@ fm-datepicker
 
 A simple date picker for **AngularJS** based on **Bootstrap** and **Moment**.
 
-![](http://i.imgur.com/CvrVZXX.png) 
+![](http://i.imgur.com/slqOuIw.png) 
