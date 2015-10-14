@@ -38,7 +38,8 @@
 	"requireCamelCaseOrUpperCaseIdentifiers": true,
 	"requireCapitalizedComments": {
 		"allExcept": [
-      "globals",
+			"globals",
+			"jshint",
 			"noinspection"
 		]
 	},
