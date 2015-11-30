@@ -187,7 +187,7 @@
 					           "      </button>" +
 					           "    </span>" +
 					           "  </div>" +
-					           "  <div class='dropdown' ng-if='style==\"dropdown\"' ng-class='{open:isOpen}'>" +
+					           "  <div class='dropdown' ng-if='style==\"dropdown\" && isOpen' ng-class='{open:isOpen}'>" +
 					           "    <ul class='dropdown-menu form-control' style='height:auto; max-height:160px; overflow-y:scroll;' ng-mousedown=\"handleListClick($event)\">" +
 					           // Fill an empty array with time values between start and end time with the given interval, then iterate over that array.
 					           "      <li ng-repeat='time in ( $parent.dropDownOptions = ( [] | fmDateInterval:startDate:endDate ) )' ng-click='select(time,$index)' ng-class='{active:(activeIndex==$index)}'>" +
