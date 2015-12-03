@@ -184,7 +184,8 @@
 				fmIsOpen    : "=?",
 				fmStyle     : "=?",
 				fmStrict    : "=?",
-				fmBtnClass  : "=?"
+				fmBtnClass  : "=?",
+				fmDisabled  : "=?"
 			},
 			controller  : "fmDatepickerController",
 			require     : "ngModel",
