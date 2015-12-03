@@ -96,7 +96,7 @@
 		 * @param {Moment} time The time value that should be constrained to be within the given bounds.
 		 * @returns {Moment} A new time value within the bounds, or the input instance.
 		 */
-		$scope.ensureTimeIsWithinBounds = function( time ) {
+		$scope.ensureTimeIsWithinBounds = function ensureTimeIsWithinBounds( time ) {
 			// We expect "time" to be a Moment instance; otherwise bail.
 			if( !time || !moment.isMoment( time ) ) {
 				return time;
