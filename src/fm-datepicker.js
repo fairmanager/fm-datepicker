@@ -78,17 +78,17 @@
 
 	/* @ngInject */
 	function fmDatepickerController( $scope ) {
-		$scope.format    = $scope.format || "LL";
-		$scope.startDate = $scope.startDate || moment().startOf( "month" );
-		$scope.endDate   = $scope.endDate || moment().endOf( "month" );
-		$scope.isOpen    = $scope.isOpen || false;
-		$scope.style     = $scope.style || "dropdown";
-		$scope.strict    = $scope.strict || false;
-		$scope.btnClass  = $scope.btnClass || "btn-default";
+		$scope.fmFormat    = $scope.fmFormat || "LL";
+		$scope.fmStartDate = $scope.fmStartDate || moment().startOf( "month" );
+		$scope.fmEndDate   = $scope.fmEndDate || moment().endOf( "month" );
+		$scope.fmIsOpen    = $scope.fmIsOpen || false;
+		$scope.fmStyle     = $scope.fmStyle || "dropdown";
+		$scope.fmStrict    = $scope.fmStrict || false;
+		$scope.fmBtnClass  = $scope.fmBtnClass || "btn-default";
 
 		if( moment.tz ) {
-			$scope.startDate.tz( $scope.timezone );
-			$scope.endDate.tz( $scope.timezone );
+			$scope.fmStartDate.tz( $scope.fmTimezone );
+			$scope.fmEndDate.tz( $scope.fmTimezone );
 		}
 
 		/**
@@ -102,11 +102,11 @@
 				return time;
 			}
 			// Constrain model value to be in given bounds.
-			if( time.isBefore( $scope.startDate ) ) {
-				return moment( $scope.startDate );
+			if( time.isBefore( $scope.fmStartDate ) ) {
+				return moment( $scope.fmStartDate );
 			}
-			if( time.isAfter( $scope.endDate ) ) {
-				return moment( $scope.endDate );
+			if( time.isAfter( $scope.fmEndDate ) ) {
+				return moment( $scope.fmEndDate );
 			}
 			return time;
 		};
@@ -118,13 +118,13 @@
 		 */
 		$scope.findActiveIndex = function findActiveIndex( model ) {
 			$scope.activeIndex = 0;
-			if( !model || !$scope.startDate.isValid() || !$scope.endDate.isValid() ) {
+			if( !model || !$scope.fmStartDate.isValid() || !$scope.fmEndDate.isValid() ) {
 				return;
 			}
 
 			// We step through each possible value instead of calculating the index directly,
 			// to make sure we account for DST changes in the reference timezone.
-			for( var time = $scope.startDate.clone(); +time <= +$scope.endDate; time.add( ONE_DAY ), ++$scope.activeIndex ) {
+			for( var time = $scope.fmStartDate.clone(); +time <= +$scope.fmEndDate; time.add( ONE_DAY ), ++$scope.activeIndex ) {
 
 				if( 9999 < $scope.activeIndex ) {
 					// Very likely a bounds issue. Avoid infinite loops.
@@ -137,7 +137,7 @@
 				// Check if we've already passed the time value that would fit our current model.
 				if( time.isAfter( model ) ) {
 					// If we're in strict mode, set an invalid index.
-					if( $scope.strict ) {
+					if( $scope.fmStrict ) {
 						$scope.activeIndex = -1;
 					}
 					// If we're not in strict mode, decrease the index to select the previous item (the one we just passed).
@@ -157,7 +157,7 @@
 			link     : function postLink( scope, element, attributes ) {
 				// Toggle the popup when the toggle button is clicked.
 				element.bind( "click", function onClick() {
-					if( scope.isOpen ) {
+					if( scope.fmIsOpen ) {
 						scope.focusInputElement();
 						scope.closePopup();
 					} else {
@@ -176,26 +176,26 @@
 			replace     : true,
 			restrict    : "E",
 			scope       : {
-				ngModel   : "=",
-				format    : "=?",
-				timezone  : "=?",
-				startDate : "=?",
-				endDate   : "=?",
-				isOpen    : "=?",
-				style     : "=?",
-				strict    : "=?",
-				btnClass  : "=?"
+				ngModel     : "=",
+				fmFormat    : "=?",
+				fmTimezone  : "=?",
+				fmStartDate : "=?",
+				fmEndDate   : "=?",
+				fmIsOpen    : "=?",
+				fmStyle     : "=?",
+				fmStrict    : "=?",
+				fmBtnClass  : "=?"
 			},
 			controller  : "fmDatepickerController",
 			require     : "ngModel",
 			link        : function postLink( scope, element, attributes, controller ) {
 				// Watch our input parameters and re-validate our view when they change.
-				scope.$watchCollection( "[startDate,endDate,strict]", function inputWatcher() {
+				scope.$watchCollection( "[fmStartDate,fmEndDate,fmStrict]", function inputWatcher() {
 					validateView();
 				} );
 
 				// Watch all time related parameters.
-				scope.$watchCollection( "[startDate,endDate,ngModel]", function dateWatcher() {
+				scope.$watchCollection( "[fmStartDate,fmEndDate,ngModel]", function dateWatcher() {
 					// When they change, find the index of the element in the dropdown that relates to the current model value.
 					scope.findActiveIndex( scope.ngModel );
 				} );
@@ -205,10 +205,10 @@
 				 */
 				controller.$render = function render() {
 					// Convert the moment instance we got to a string in our desired format.
-					var time = moment( controller.$modelValue ).format( scope.format );
+					var time = moment( controller.$modelValue ).format( scope.fmFormat );
 					// Check if the given time is valid.
 					var timeValid = checkTimeValueValid( time );
-					if( scope.strict ) {
+					if( scope.fmStrict ) {
 						timeValid = timeValid && checkTimeValueWithinBounds( time );
 					}
 
@@ -239,14 +239,14 @@
 					resetValidity( true );
 					// Check if the string in the input box represents a valid date according to the rules set through parameters in our scope.
 					var timeValid = checkTimeValueValid( scope.time );
-					if( scope.strict ) {
+					if( scope.fmStrict ) {
 						timeValid = timeValid && checkTimeValueWithinBounds( scope.time );
 					}
 
-					if( !scope.startDate.isValid() ) {
+					if( !scope.fmStartDate.isValid() ) {
 						controller.$setValidity( "start", false );
 					}
-					if( !scope.endDate.isValid() ) {
+					if( !scope.fmEndDate.isValid() ) {
 						controller.$setValidity( "end", false );
 					}
 
@@ -256,10 +256,10 @@
 						if( moment.tz ) {
 							newTime = moment.tz(
 								scope.time,
-								scope.format,
-								scope.timezone );
+								scope.fmFormat,
+								scope.fmTimezone );
 						} else {
-							newTime = moment( scope.time, scope.format );
+							newTime = moment( scope.time, scope.fmFormat );
 						}
 						controller.$setViewValue( newTime );
 						// ...convert it back to a string in our desired format.
@@ -267,10 +267,10 @@
 						if( moment.tz ) {
 							scope.time = moment.tz(
 								scope.time,
-								scope.format,
-								scope.timezone ).format( scope.format );
+								scope.fmFormat,
+								scope.fmTimezone ).format( scope.fmFormat );
 						} else {
-							scope.time = moment( scope.time, scope.format ).format( scope.format );
+							scope.time = moment( scope.time, scope.fmFormat ).format( scope.fmFormat );
 						}
 					}
 				}
@@ -285,10 +285,10 @@
 					if( moment.tz ) {
 						time = timeString ? moment.tz(
 							timeString,
-							scope.format,
-							scope.timezone ) : moment.invalid();
+							scope.fmFormat,
+							scope.fmTimezone ) : moment.invalid();
 					} else {
-						time = timeString ? moment( timeString, scope.format ) : moment.invalid();
+						time = timeString ? moment( timeString, scope.fmFormat ) : moment.invalid();
 					}
 					if( !time.isValid() ) {
 						controller.$setValidity( "time", false );
@@ -310,12 +310,12 @@
 					if( moment.tz ) {
 						time = timeString ? moment.tz(
 							timeString,
-							scope.format,
-							scope.timezone ) : moment.invalid();
+							scope.fmFormat,
+							scope.fmTimezone ) : moment.invalid();
 					} else {
-						time = timeString ? moment( timeString, scope.format ) : moment.invalid();
+						time = timeString ? moment( timeString, scope.fmFormat ) : moment.invalid();
 					}
-					if( !time.isValid() || time.isBefore( scope.startDate ) || time.isAfter( scope.endDate ) ) {
+					if( !time.isValid() || time.isBefore( scope.fmStartDate ) || time.isAfter( scope.fmEndDate ) ) {
 						controller.$setValidity( "bounds", false );
 						controller.$setViewValue( null );
 						return false;
@@ -331,7 +331,7 @@
 					} );
 
 					// Scroll the selected list item into view if the popup is open.
-					if( scope.isOpen ) {
+					if( scope.fmIsOpen ) {
 						// Use $timeout to give the DOM time to catch up.
 						$timeout( scrollSelectedItemIntoView );
 					}
@@ -359,9 +359,9 @@
 				 * Open the popup dropdown list.
 				 */
 				function openPopup() {
-					if( !scope.isOpen ) {
-						scope.isOpen       = true;
-						scope.modelPreview = scope.ngModel ? scope.ngModel.clone() : scope.startDate.clone();
+					if( !scope.fmIsOpen ) {
+						scope.fmIsOpen     = true;
+						scope.modelPreview = scope.ngModel ? scope.ngModel.clone() : scope.fmStartDate.clone();
 						$timeout( ensureUpdatedView );
 					}
 				}
@@ -377,10 +377,10 @@
 						// list items can happen before the popup is hidden.
 						$timeout(
 							function closeDropdown() {
-								scope.isOpen = false;
+								scope.fmIsOpen = false;
 							}, 200 );
 					} else {
-						scope.isOpen = false;
+						scope.fmIsOpen = false;
 						$timeout( ensureUpdatedView );
 					}
 				};
@@ -402,12 +402,12 @@
 					// Construct a moment instance from the UNIX offset.
 					var time;
 					if( moment.tz ) {
-						time = moment( timestamp ).tz( scope.timezone );
+						time = moment( timestamp ).tz( scope.fmTimezone );
 					} else {
 						time = moment( timestamp );
 					}
 					// Format the time to store it in the input box.
-					scope.time = time.format( scope.format );
+					scope.time = time.format( scope.fmFormat );
 
 					// Store the selected index
 					scope.activeIndex = elementIndex;
@@ -417,25 +417,25 @@
 				};
 
 				scope.increment = function increment() {
-					if( scope.isOpen ) {
+					if( scope.fmIsOpen ) {
 						scope.modelPreview.add( ONE_DAY );
 						scope.modelPreview = scope.ensureTimeIsWithinBounds( scope.modelPreview );
 					} else {
 						scope.ngModel.add( ONE_DAY );
 						scope.ngModel = scope.ensureTimeIsWithinBounds( scope.ngModel );
-						scope.time    = scope.ngModel.format( scope.format );
+						scope.time    = scope.ngModel.format( scope.fmFormat );
 					}
 					scope.activeIndex = Math.min( scope.largestPossibleIndex, scope.activeIndex + 1 );
 				};
 
 				scope.decrement = function decrement() {
-					if( scope.isOpen ) {
+					if( scope.fmIsOpen ) {
 						scope.modelPreview.subtract( ONE_DAY );
 						scope.modelPreview = scope.ensureTimeIsWithinBounds( scope.modelPreview );
 					} else {
 						scope.ngModel.subtract( ONE_DAY );
 						scope.ngModel = scope.ensureTimeIsWithinBounds( scope.ngModel );
-						scope.time    = scope.ngModel.format( scope.format );
+						scope.time    = scope.ngModel.format( scope.fmFormat );
 					}
 					scope.activeIndex = Math.max( 0, scope.activeIndex - 1 );
 				};
@@ -449,10 +449,10 @@
 						var newTime;
 						if( moment.tz ) {
 							newTime = moment.tz( scope.time,
-								scope.format,
-								scope.timezone );
+								scope.fmFormat,
+								scope.fmTimezone );
 						} else {
-							newTime = moment( scope.time, scope.format );
+							newTime = moment( scope.time, scope.fmFormat );
 						}
 						controller.$setViewValue( newTime );
 					}
@@ -463,8 +463,8 @@
 						case 13:
 							// Enter
 							if( scope.modelPreview ) {
-								scope.ngModel = scope.modelPreview;
-								scope.isOpen  = false;
+								scope.ngModel  = scope.modelPreview;
+								scope.fmIsOpen = false;
 							}
 							break;
 						case 27:
