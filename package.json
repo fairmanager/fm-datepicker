@@ -1,6 +1,6 @@
 {
   "name": "fm-datepicker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "FairManager Date Picker Component",
   "main": "src/fm-datepicker.js",
   "devDependencies": {
