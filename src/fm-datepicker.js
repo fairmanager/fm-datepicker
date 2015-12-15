@@ -78,13 +78,18 @@
 
 	/* @ngInject */
 	function fmDatepickerController( $scope ) {
-		$scope.fmFormat    = $scope.fmFormat || "LL";
-		$scope.fmStartDate = $scope.fmStartDate || moment().startOf( "month" );
-		$scope.fmEndDate   = $scope.fmEndDate || moment().endOf( "month" );
-		$scope.fmIsOpen    = $scope.fmIsOpen || false;
-		$scope.fmStyle     = $scope.fmStyle || "dropdown";
-		$scope.fmStrict    = $scope.fmStrict || false;
-		$scope.fmBtnClass  = $scope.fmBtnClass || "btn-default";
+		$scope.fmFormat      = $scope.fmFormat || "LL";
+		$scope.fmStartDate   = $scope.fmStartDate || moment().startOf( "month" );
+		$scope.fmEndDate     = $scope.fmEndDate || moment().endOf( "month" );
+		$scope.fmIsOpen      = $scope.fmIsOpen || false;
+		$scope.fmStyle       = $scope.fmStyle || "dropdown";
+		$scope.fmStrict      = $scope.fmStrict || false;
+		$scope.fmBtnClass    = $scope.fmBtnClass || "btn btn-default";
+		$scope.fmIconClasses = $scope.fmIconClasses || {
+				plus     : "glyphicon glyphicon-plus",
+				minus    : "glyphicon glyphicon-minus",
+				calendar : "glyphicon glyphicon-calendar"
+			};
 
 		if( moment.tz ) {
 			$scope.fmStartDate.tz( $scope.fmTimezone );
