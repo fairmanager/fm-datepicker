@@ -107,10 +107,10 @@
 				return time;
 			}
 			// Constrain model value to be in given bounds.
-			if( time.isBefore( $scope.fmStartDate ) ) {
+			if( time.isBefore( $scope.fmStartDate, "day" ) ) {
 				return moment( $scope.fmStartDate );
 			}
-			if( time.isAfter( $scope.fmEndDate ) ) {
+			if( time.isAfter( $scope.fmEndDate, "day" ) ) {
 				return moment( $scope.fmEndDate );
 			}
 			return time;
@@ -136,11 +136,11 @@
 					break;
 				}
 
-				if( time.isSame( model ) ) {
+				if( time.isSame( model, "day" ) ) {
 					break;
 				}
 				// Check if we've already passed the time value that would fit our current model.
-				if( time.isAfter( model ) ) {
+				if( time.isAfter( model, "day" ) ) {
 					// If we're in strict mode, set an invalid index.
 					if( $scope.fmStrict ) {
 						$scope.activeIndex = -1;
@@ -322,7 +322,7 @@
 					} else {
 						time = timeString ? moment( timeString, scope.fmFormat ) : moment.invalid();
 					}
-					if( !time.isValid() || time.isBefore( scope.fmStartDate ) || time.isAfter( scope.fmEndDate ) ) {
+					if( !time.isValid() || time.isBefore( scope.fmStartDate, "day" ) || time.isAfter( scope.fmEndDate, "day" ) ) {
 						controller.$setValidity( "bounds", false );
 						controller.$setViewValue( null );
 						return false;
