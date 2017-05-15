@@ -199,7 +199,9 @@
 		"no-unused-vars": [
 			1,
 			{
-				"argsIgnorePattern" : "error|request|response"
+				"args": "all",
+				"argsIgnorePattern" : "error|request|response",
+				"vars": "all"
 			}
 		],
 		// disallow the use of variables before they are defined
