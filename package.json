@@ -39,5 +39,9 @@
   "bugs": {
     "url": "https://github.com/fairmanager/fm-datepicker/issues"
   },
-  "homepage": "https://github.com/fairmanager/fm-datepicker"
+  "homepage": "https://github.com/fairmanager/fm-datepicker",
+  "engines": {
+    "node": "^8.9.0",
+    "npm": "~5.5.1"
+  }
 }
