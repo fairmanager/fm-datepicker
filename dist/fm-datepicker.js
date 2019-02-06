@@ -31,6 +31,8 @@
 
 	/* globals $, angular, Hamster, moment */
 
+	fmDatepickerController.$inject = ["$scope"];
+	fmDatepicker.$inject = ["$timeout"];
 	var ONE_DAY  = moment.duration( 1, "day" );
 	var ONE_WEEK = moment.duration( 1, "week" );
 
@@ -155,7 +157,6 @@
 		// Seed the active index based on the current model value.
 		$scope.findActiveIndex( $scope.ngModel );
 	}
-	fmDatepickerController.$inject = ["$scope"];
 
 	function fmDatepickerToggle() {
 		return {
@@ -580,6 +581,5 @@
 			}
 		};
 	}
-	fmDatepicker.$inject = ["$timeout"];
 
 })();

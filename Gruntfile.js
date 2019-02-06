@@ -9,7 +9,7 @@ module.exports = function( grunt ) {
 				options : {
 					jshintrc : true
 				},
-				src     : {
+				src : {
 					src : [
 						"src/*.js"
 					]
@@ -19,16 +19,16 @@ module.exports = function( grunt ) {
 			html2js : {
 				dist : {
 					options : {
-						module         : "fmDatepicker",
+						module : "fmDatepicker",
 						existingModule : true,
-						singleModule   : true,
-						base           : "src",
-						htmlmin        : {
+						singleModule : true,
+						base : "src",
+						htmlmin : {
 							collapseWhitespace : true
 						}
 					},
-					files   : [ {
-						src  : "src/fmDatepicker.html",
+					files : [ {
+						src : "src/fmDatepicker.html",
 						dest : "dist/<%= pkg.name %>.html.js"
 					} ]
 				}
@@ -36,32 +36,36 @@ module.exports = function( grunt ) {
 
 			ngAnnotate : {
 				js : {
-					src  : "src/<%= pkg.name %>.js",
+					src : "src/<%= pkg.name %>.js",
 					dest : "dist/<%= pkg.name %>.js"
 				}
 			},
 
 			copy : {
+				css : {
+					src : "src/<%= pkg.name %>.css",
+					dest : "dist/<%= pkg.name %>.css"
+				},
 				hamster : {
-					src  : "bower_components/hamsterjs/hamster.js",
+					src : "bower_components/hamsterjs/hamster.js",
 					dest : "dist/hamster.js"
 				}
 			},
 
 			concat : {
 				template : {
-					src  : [ "dist/<%= pkg.name %>.js", "dist/<%= pkg.name %>.html.js" ],
+					src : [ "dist/<%= pkg.name %>.js", "dist/<%= pkg.name %>.html.js" ],
 					dest : "dist/<%= pkg.name %>.tpls.js"
 				}
 			},
 
 			uglify : {
-				js       : {
-					src  : "dist/<%= pkg.name %>.js",
+				js : {
+					src : "dist/<%= pkg.name %>.js",
 					dest : "dist/<%= pkg.name %>.min.js"
 				},
 				template : {
-					src  : "dist/<%= pkg.name %>.tpls.js",
+					src : "dist/<%= pkg.name %>.tpls.js",
 					dest : "dist/<%= pkg.name %>.tpls.min.js"
 				}
 			},
@@ -75,7 +79,7 @@ module.exports = function( grunt ) {
 				options : {
 					base : "dist"
 				},
-				src     : [ "**" ]
+				src : [ "**" ]
 			}
 		}
 	);
