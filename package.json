@@ -1,6 +1,6 @@
 {
   "name": "fm-datepicker",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "FairManager Date Picker Component",
   "main": "dist/fm-datepicker.tpls.js",
   "dependencies": {
